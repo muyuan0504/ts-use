@@ -1,7 +1,9 @@
 /*
  * @Author: jimouspeng
  * @Date: 2022-04-25 17:30:58
- * @Description:  
+ * @Description: typescript类型体操
+ * 默认情况下null和undefined是所有类型的子类型，即可以把null和undefined赋值给number类型的变量
+ * 当指定了--strictNullChecks标记，null和undefined只能赋值给void和它们自身
  * @FilePath: \typescript\index.ts
  */
 
@@ -21,8 +23,32 @@ console.log(greeter(user));
 let isDone: boolean = false;
 let decLiteral: number = 6;
 
+let anyA: any = 1;
+anyA = []
+
 console.log(isDone, decLiteral);
 
-export {}
+let list: number[] = [1, 2, 3, null]
+let list0: Array<any> = [1, '2', { a: 0 }]
+let list1: Array<number> = [1, 2, 3]
+let list2: any[] = [1, 2, 3, '4']
+
+function getUser(): number {
+    let b: Array<number> = [12, 2]
+    return 1
+}
+
+function foo(): any {
+    // okay to capture 'a'
+    return a;
+}
+
+// 不能在'a'被声明前调用'foo'
+// 运行时应该抛出错误
+foo();
+
+let a: any;
+
+export { }
 
 
