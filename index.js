@@ -5,8 +5,9 @@
  * @Description: typescript类型体操
  * 默认情况下null和undefined是所有类型的子类型，即可以把null和undefined赋值给number类型的变量
  * 当指定了--strictNullChecks标记，null和undefined只能赋值给void和它们自身
- * @FilePath: \typescript\index.js
+ * @FilePath: \typescript\index.ts
  */
+exports.__esModule = true;
 function greeter(person) {
     return "Hello, " + person.firstName + " " + person.lastName;
 }
@@ -32,4 +33,4 @@ function foo() {
 // 不能在'a'被声明前调用'foo'
 // 运行时应该抛出错误
 foo();
-let a; // 执行tsc index.ts后，会将声明方式改用var
+var a; // 执行tsc index.ts后，会将声明方式改用var

@@ -47,7 +47,28 @@ function foo(): any {
 // 运行时应该抛出错误
 foo();
 
-let a: any;
+let a: any;   // 执行tsc index.ts后，会将声明方式改用var
+
+
+
+/** 接口 */
+
+interface UserInfo {
+    name: string,
+    age?: number, // 可选属性 [属性名字定义的后面加一个?符号声明]
+    readonly company?: string,
+    aList: ReadonlyArray<number>
+}
+
+function printLabel(labelledObj: UserInfo) {
+    console.log(labelledObj.name);
+    // labelledObj.company = '小鹅通' // 只读属性无法变更
+    // labelledObj.aList.push(3) // ReadonlyArray定义后数组无法被修改
+}
+
+let myObj = { name: 'jimous', company: 'xiaoe', aList: [1, 2] };
+printLabel(myObj);
+
 
 export { }
 
