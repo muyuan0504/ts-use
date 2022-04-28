@@ -92,15 +92,14 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 createSquare({ colour: "red", width: 100 }); // 由于colour属性未定义，所以会提示错误
 // let mySquare = createSquare({ colour: "red", width: 100 } as SquareConfig); // 绕开这些检查非常简单。 最简便的方法是使用类型断言
 
+/** 函数式接口 */
 interface SearchFunc {
     (source: string, subString: string): boolean;
 }
-let mySearch: SearchFunc;
-mySearch = function (src, sub) { // 对于函数类型的类型检查来说，函数的参数名不需要与接口里定义的名字相匹配
+let mySearch: SearchFunc = (src, sub) => { // 对于函数类型的类型检查来说，函数的参数名不需要与接口里定义的名字相匹配
     let result = src.search(sub);
     return result > -1;
 }
-
 mySearch('', '')
 
 /** 可索引的类型-索引签名 */
@@ -109,9 +108,40 @@ interface StringArray {
 }
 
 let myArray: StringArray;
-myArray = ["Bob", "Fred", 3];
+myArray = ["Bob", "Fred"];
 
 let myStr: string = myArray[0];
+
+
+/** 类型兼容性
+ *  如果x要兼容y，那么y至少具有与x相同的属性
+ *  函数兼容性： 
+ */
+
+interface Named {
+    name: string;
+}
+let x: Named;
+// y's inferred type is { name: string; location: string; }
+let y = { name: 'Alice', location: 'Seattle' };
+x = y; // 只有目标类型（这里是Named）的成员会被一一检查是否兼容, 所以这里y即使有location属性，但不会引发错误
+
+console.log(x, '看看x');
+
+let x1 = (a: number) => 0;
+let y2 = (b: number, s: string) => 0;
+
+/** 要查看x是否能赋值给y，首先看它们的参数列表。 x的每个参数必须能在y里找到对应类型的参数。 
+ * 注意的是参数的名字相同与否无所谓，只看它们的类型。 
+ * 这里，x的每个参数在y中都能找到对应的参数，所以允许赋值 
+ */
+y2 = x1; // OK
+// x1 = y2; // Error
+
+let symbolA: symbol = Symbol()
+
+console.log(symbolA, 'symbol');
+
 
 export { }
 
