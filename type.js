@@ -1,15 +1,14 @@
-"use strict";
 /*
  * @Author: jimouspeng
  * @Date: 2022-05-17 15:34:01
  * @Description: ts类型
  * @FilePath: \typescript\type.ts
  */
-exports.__esModule = true;
 // 基础类型
 var isBooleanA = false;
 var isNumberA = 0;
 var isStringA = '';
+/** 数组 */
 var isArrayA0 = []; // 使用数组泛型
 var isArrayA1 = []; // 类型后面接上[]
 /** 元组类型Tuple: 允许表示一个已知元素数量和类型的数组，各元素的类型不必相同 */
@@ -72,8 +71,128 @@ function infiniteLoop() {
 /** Object: 表示非原始类型，也就是除number，string，boolean，bigint，symbol，null或undefined之外的类型 */
 var isObjectA = { a: 1 };
 console.log(isObjectA);
+/** 类型断言 - (类型转换发生于运行时, 类型断言发生于编译时)
+ * 有时候你会遇到这样的情况，你会比TypeScript更了解某个值的详细信息。 通常这会发生在你清楚地知道一个实体具有比它现有类型更确切的类型
+ * 类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用
+ * 类型断言有两种形式。
+ * “尖括号”语法和as语法 (当你在TypeScript里使用JSX时，只有as语法断言是被允许的)
+ */
+var someStr = 'this is string';
+var strLength = someStr.length;
+var strLength2 = someStr.length;
 function getUserName(person) {
-    person.name = 'jimous is cool';
+    /** person.name = 'jimous is cool' // 由于设置name为只读，所以这里会报错 */
     console.log(person.name, person.age, person.level);
 }
-getUserName({ name: 'jimous', age: 26 });
+/**
+ * 由于UseName没有school属性，TypeScript 会认为这段代码可能存在 bug。
+ * 对象字面量会被特殊对待而且会经过_额外属性检查_，当将它们赋值给变量或作为参数传递的时候。
+ * 如果一个对象字面量存在任何“目标类型”不包含的属性时，你会得到一个错误
+ *
+ * 解决办法1-类型断言:
+ *   getUserName({ name: 'jimous', age: 26, school: 'ncu' } as UseName)
+ * 解决办法2-添加一个字符串索引签名:
+ *   interface UseName { level?: 0, age: number, readonly name: string, [propName: string]: any; }
+ * 解决办法3-将这个对象赋值给一个另一个变量
+ *   let useName2 = { name: 'jimous', age: 26, school: 'ncu', from: 'china' }; 前提是变量间起码要存在一个共同的对象属性，否则报错
+ */
+getUserName({ name: 'jimous', age: 26, school: 'ncu', from: 'china' });
+var useName2 = { name: 'jimous', age: 12 };
+getUserName(useName2);
+var getUserName2 = function (age1, name1) {
+    console.log(age1, name1);
+    return true; // 如果返回不是boolean类型，会报错，因为useNameFunc接口已经定义了函数的返回值
+};
+console.log(getUserName2('12', 'jimous'));
+var myArray;
+myArray = ["Bob", "Fred"];
+var myStr = myArray[0];
+var Clock = /** @class */ (function () {
+    function Clock(h, m) {
+        this.currentTime = new Date();
+    }
+    Clock.prototype.setTime = function (d) {
+        throw new Error("Method not implemented.");
+    };
+    return Clock;
+}());
+var square = {};
+square.color = "blue";
+square.sideLength = 10;
+// 函数
+/** 函数类型
+ * 只要参数类型是匹配的，那么就认为它是有效的函数类型，而不在乎参数名是否正确
+ * 可以给每个参数添加类型之后再为函数本身添加返回值类型。 TypeScript能够根据返回语句自动推断出返回值类型，因此我们通常省略它
+ */
+function add(x, y) {
+    return x + y;
+}
+/** 可选参数和默认参数
+ * 在参数名旁使用?实现可选参数的功能
+ * 默认参数同js
+ */
+function add2(x, y, z) {
+    if (z === void 0) { z = 3; }
+    return x + y + z;
+}
+/** 剩余参数
+ * 可以把所有参数收集到一个变量里
+ */
+function buildName(firstName) {
+    var restOfName = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        restOfName[_i - 1] = arguments[_i];
+    }
+    return firstName + " " + restOfName.join(" ");
+}
+var employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
+var UIElement = /** @class */ (function () {
+    function UIElement() {
+    }
+    UIElement.prototype.animate = function (dx, dy, easing) {
+        if (easing === "ease-in") {
+            // ...
+        }
+        else if (easing === "ease-out") {
+        }
+        else if (easing === "ease-in-out") {
+        }
+        else {
+            // It's possible that someone could reach this
+            // by ignoring your types though.
+        }
+    };
+    return UIElement;
+}());
+/** 数字字面量类型 -- 数字字面量类型经常用来描述配置值 */
+function rollDice() {
+    return (Math.floor(Math.random() * 6) + 1);
+}
+var result = rollDice();
+;
+;
+// 类
+// 枚举
+/** 使用枚举我们可以定义一些带名字的常量。 使用枚举可以清晰地表达意图或创建一组有区别的用例。 TypeScript支持数字的和基于字符串的枚举
+ * 数字枚举：使用初始化为1。 其余的成员会从1开始自动增长
+ * 字符串枚举: 字符串枚举没有自增长的行为，字符串枚举可以很好的序列化
+ *
+*/
+var Direction;
+(function (Direction) {
+    Direction[Direction["Up"] = 0] = "Up";
+    Direction[Direction["Down"] = 1] = "Down";
+    Direction[Direction["Left"] = 2] = "Left";
+    Direction[Direction["Right"] = 3] = "Right";
+})(Direction || (Direction = {}));
+var NumberA = Direction.Up;
+var Direction2;
+(function (Direction2) {
+    Direction2["Up"] = "UP";
+    Direction2["Down"] = "DOWN";
+    Direction2["Left"] = "LEFT";
+    Direction2["Right"] = "RIGHT";
+})(Direction2 || (Direction2 = {}));
+console.log(NumberA, Direction2);
+// 泛型
+// export { }
