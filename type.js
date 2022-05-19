@@ -176,6 +176,8 @@ var result = rollDice();
 /** 使用枚举我们可以定义一些带名字的常量。 使用枚举可以清晰地表达意图或创建一组有区别的用例。 TypeScript支持数字的和基于字符串的枚举
  * 数字枚举：使用初始化为1。 其余的成员会从1开始自动增长
  * 字符串枚举: 字符串枚举没有自增长的行为，字符串枚举可以很好的序列化
+ * 异构枚举（Heterogeneous enums）：从技术的角度来说，枚举可以混合字符串和数字成员(除非你真的想要利用JavaScript运行时的行为，否则我们不建议这样做)
+ * 计算的和常量成员: 每个枚举成员都带有一个值，它可以是_常量_或_计算出来的_。 当满足如下条件时，枚举成员被当作是常量
  *
 */
 var Direction;
@@ -195,4 +197,16 @@ var Direction2;
 })(Direction2 || (Direction2 = {}));
 console.log(NumberA, Direction2);
 // 泛型
+/** 可以使用泛型来创建可重用的组件，一个组件可以支持多种类型的数据。 这样用户就可以以自己的数据类型来使用组件 */
+function identity(arg) {
+    /** 给identity添加了类型变量T。
+     * T帮助我们捕获用户传入的类型（比如：number），之后我们就可以使用这个类型。
+     * 之后我们再次使用了T当做返回值类型。
+     * 现在我们可以知道参数类型与返回值类型是相同的了。
+     * 这允许我们跟踪函数里使用的类型的信息
+    */
+    return arg;
+}
+var output = identity("myString"); // type of output will be 'string'
+console.log(output);
 // export { }

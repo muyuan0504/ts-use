@@ -7,7 +7,9 @@
 
 // 基础类型
 let isBooleanA: boolean = false;
+isBooleanA = null; // 默认情况下，类型检查器认为null与undefined可以赋值给任何类型
 let isNumberA: number = 0;
+isNumberA = undefined
 let isStringA: string = ''
 /** 数组 */
 let isArrayA0: Array<any> = [] // 使用数组泛型
@@ -83,6 +85,27 @@ let someStr: any = 'this is string';
 let strLength: number = (<string>someStr).length;
 let strLength2: number = (someStr as string).length
 
+
+
+
+
+
+
+
+
+
+// 类型别名
+type Name = string;
+type NameResolver = () => string;
+type NameOrResolver = Name | NameResolver;
+function getName(n: NameOrResolver): Name {
+    if (typeof n === 'string') {
+        return n;
+    }
+    else {
+        return n();
+    }
+}
 
 
 
@@ -338,6 +361,44 @@ console.log(NumberA, Direction2)
 
 // 泛型
 /** 可以使用泛型来创建可重用的组件，一个组件可以支持多种类型的数据。 这样用户就可以以自己的数据类型来使用组件 */
+function identity<T>(arg: T): T {
+    /** 给identity添加了类型变量T。 
+     * T帮助我们捕获用户传入的类型（比如：number），之后我们就可以使用这个类型。 
+     * 之后我们再次使用了T当做返回值类型。
+     * 现在我们可以知道参数类型与返回值类型是相同的了。 
+     * 这允许我们跟踪函数里使用的类型的信息 
+    */
+    return arg;
+}
+let output = identity<string>("myString");  // type of output will be 'string'
+console.log(output)
+/** 使用泛型变量 */
+// function loggingIdentity<T>(arg: T): T {
+//     console.log(arg.length);  // Error: T doesn't have .length
+//     return arg;
+// }
+function loggingIdentity<T>(arg: T[]): T[] {
+    console.log(arg.length);  // Array has a .length, so no more error
+    return arg;
+}
+/** 泛型类
+ * 类有两部分：静态部分和实例部分。 泛型类指的是实例部分的类型，所以类的静态属性不能使用这个泛型类型
+ */
+class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function (x, y) { return x + y; };
+/** 泛型约束 */
+interface Lengthwise {
+    length: number;
+}
+function loggingIdentity0<T extends Lengthwise>(arg: T): T {
+    console.log(arg.length);
+    return arg;
+}
 
 
 
@@ -348,4 +409,38 @@ console.log(NumberA, Direction2)
 
 
 
-// export { }
+
+/** 高级类型
+ * 交叉类型：将多个类型合并为一个类型
+ * 联合类型（Union Types）: 只能访问此联合类型的所有类型里共有的成员
+ */
+function extend<First, Second>(first: First, second: Second): First & Second {
+    const result: Partial<First & Second> = {};
+    for (const prop in first) {
+        if (first.hasOwnProperty(prop)) {
+            (result as First)[prop] = first[prop];
+        }
+    }
+    for (const prop in second) {
+        if (second.hasOwnProperty(prop)) {
+            (result as Second)[prop] = second[prop];
+        }
+    }
+    return result as First & Second;
+}
+class Person {
+    constructor(public name: string) { }
+}
+interface Loggable {
+    log(name: string): void;
+}
+class ConsoleLogger implements Loggable {
+    log(name) {
+        console.log(`Hello, I'm ${name}.`);
+    }
+}
+const jim = extend(new Person('Jim'), ConsoleLogger.prototype);
+jim.log(jim.name);
+
+
+export { }
