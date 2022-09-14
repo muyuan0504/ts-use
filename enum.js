@@ -12,6 +12,6 @@ var FileAccess;
     FileAccess[FileAccess["Write"] = 4] = "Write";
     FileAccess[FileAccess["ReadWrite"] = 5] = "ReadWrite";
     // computed member
-    FileAccess[FileAccess["G"] = "123".length] = "G";
+    FileAccess[FileAccess["G"] = '123'.length] = "G";
 })(FileAccess || (FileAccess = {}));
-console.log('枚举', FileAccess.None, FileAccess.Read, FileAccess.Write, FileAccess.ReadWrite, FileAccess.G);
+console.log('枚举', FileAccess[0], FileAccess.None, FileAccess.Read, FileAccess.Write, FileAccess.ReadWrite, FileAccess.G);
