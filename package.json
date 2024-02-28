@@ -1,0 +1,26 @@
+{
+    "name": "ts-use",
+    "version": "1.0.0",
+    "description": "typescript use",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/muyuan0504/ts-use.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "types": "./index.d.ts",
+    "bugs": {
+        "url": "https://github.com/muyuan0504/ts-use/issues"
+    },
+    "homepage": "https://github.com/muyuan0504/ts-use#readme",
+    "dependencies": {
+        "vite": "^5.1.4"
+    }
+}
