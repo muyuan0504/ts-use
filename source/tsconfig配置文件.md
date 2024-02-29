@@ -15,9 +15,11 @@ tsc --init
 
 #### 字段配置
 
+配置包括
+
 -   compilerOptions
 
-编译器选项如果忽略，这时编译器会使用默认值.
+必需的字段属性, 编译器选项如果忽略，这时编译器会使用默认值.
 
 ```json
 /** 编译选项配置参数 */
@@ -262,10 +264,6 @@ tsc --init
 }
 ```
 
--   compileOnSave
-
-启用编辑器保存文件时自动触发 TypeScript 编译
-
 -   include 与 exclude
 
 指定需要包含在编译过程中的文件或目录，可以使用 glob 模式匹配多个文件或目录；
@@ -296,3 +294,27 @@ tsc --init
 不管"exclude"如何设置。
 
 如果没有特殊指定，"exclude"默认情况下会排除 node_modules，bower_components，jspm_packages 和<outDir>目录
+
+-   compileOnSave
+
+启用编辑器保存文件时自动触发 TypeScript 编译
+
+```json
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "noImplicitAny": true
+    }
+}
+```
+
+-   extends
+
+从另一个配置文件里继承配置
+
+```json
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {}
+}
+```
