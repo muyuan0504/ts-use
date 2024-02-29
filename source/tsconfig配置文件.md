@@ -288,3 +288,11 @@ tsc --init
 ```
 
 如果"files"和"include"都没有被指定，编译器默认包含当前目录和子目录下所有的 TypeScript 文件（.ts, .d.ts 和 .tsx），排除在"exclude"里指定的文件
+
+**使用"include"引入的文件可以使用"exclude"属性过滤：**
+
+如 include 指定了 ./src 目录，但是可以 通过配置 exclude 的 ./src/history 文件夹，过滤掉 history 目录下的文件，但是通过"files"属性明确指定的文件却总是会被包含在内，
+
+不管"exclude"如何设置。
+
+如果没有特殊指定，"exclude"默认情况下会排除 node_modules，bower_components，jspm_packages 和<outDir>目录

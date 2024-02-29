@@ -1,5 +1,9 @@
-type useName = string | number
+const testName: stringOrNumber = 'ncu'
 
-const testName: useName = 'ncu'
+let isName = customType.isName
+
+isName = 99
 
 console.log('typescript', testName)
+
+console.log('isName: ', isName)

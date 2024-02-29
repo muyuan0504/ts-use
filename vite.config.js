@@ -1,5 +1,7 @@
 /** vite 配置文件: 以命令行方式运行 vite 时，Vite 会自动解析 项目根目录下 vite.config.js 的配置文件 */
 
+import { resolve } from 'path'
+
 export default {
     build: {
         lib: {
@@ -11,7 +13,9 @@ export default {
         outDir: './dist',
     },
     resolve: {
-        alias: {},
+        alias: {
+            '@types': resolve(__dirname, './types'),
+        },
     },
     mode: 'development',
 }
